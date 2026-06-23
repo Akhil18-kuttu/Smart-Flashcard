@@ -8,18 +8,20 @@ export default function Navbar() {
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
   useEffect(() => {
-    fetch('http://localhost:5000/auth/me', { credentials: 'include' })
+    fetch(`${API_URL}/auth/me`, { credentials: 'include' })
       .then(res => {
         if (res.ok) setIsAuth(true);
         else setIsAuth(false);
       })
       .catch(() => setIsAuth(false))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [API_URL]);
 
   const handleLogout = async () => {
-    await fetch('http://localhost:5000/auth/logout', { method: 'POST', credentials: 'include' });
+    await fetch(`${API_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
     setIsAuth(false);
     router.push('/');
   };

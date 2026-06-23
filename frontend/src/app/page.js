@@ -9,19 +9,21 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
   useEffect(() => {
-    fetch('http://localhost:5000/auth/me', { credentials: 'include' })
+    fetch(`${API_URL}/auth/me`, { credentials: 'include' })
       .then(res => {
         if (res.ok) router.push('/dashboard');
       });
-  }, [router]);
+  }, [router, API_URL]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     const endpoint = isLogin ? "/auth/login" : "/auth/signup";
     try {
-      const res = await fetch(`http://localhost:5000${endpoint}`, {
+      const res = await fetch(`${API_URL}${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

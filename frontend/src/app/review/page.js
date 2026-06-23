@@ -9,8 +9,10 @@ export default function Review() {
   const [isDone, setIsDone] = useState(false);
   const router = useRouter();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
   useEffect(() => {
-    fetch("http://localhost:5000/flashcards/list", {
+    fetch(`${API_URL}/flashcards/list`, {
       credentials: "include"
     })
       .then(async res => {
@@ -35,13 +37,13 @@ export default function Review() {
         if (due.length === 0) setIsDone(true);
       })
       .catch(err => console.error(err));
-  }, [router]);
+  }, [router, API_URL]);
 
   const handleReview = async (status) => {
     const card = cards[currentIndex];
 
     try {
-      await fetch("http://localhost:5000/flashcards/review", {
+      await fetch(`${API_URL}/flashcards/review`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json"

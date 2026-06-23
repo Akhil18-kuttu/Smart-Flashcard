@@ -6,9 +6,11 @@ import Link from "next/link";
 export default function Dashboard() {
   const [cards, setCards] = useState([]);
   const router = useRouter();
+  
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
   useEffect(() => {
-    fetch("http://localhost:5000/flashcards/list", {
+    fetch(`${API_URL}/flashcards/list`, {
       credentials: "include"
     })
       .then(async res => {

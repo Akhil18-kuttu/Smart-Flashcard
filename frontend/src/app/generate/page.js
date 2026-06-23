@@ -7,6 +7,8 @@ export default function Generate() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
   const handleGenerate = async (e) => {
     e.preventDefault();
     if (!notes.trim()) return;
@@ -14,7 +16,7 @@ export default function Generate() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/flashcards/create", {
+      const res = await fetch(`${API_URL}/flashcards/create`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json"
