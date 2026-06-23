@@ -36,8 +36,8 @@ router.post("/login", async (req, res) => {
     
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: true, // MUST be true for SameSite=none
+      sameSite: "none", // REQUIRED for cross-site cross-origin cookies (Vercel -> Render)
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       path: "/"
     });
@@ -50,7 +50,11 @@ router.post("/login", async (req, res) => {
 
 // Logout
 router.post("/logout", (req, res) => {
-  res.clearCookie("token", { path: "/" });
+  res.clearCookie("token", { 
+    path: "/",
+    secure: true,
+    sameSite: "none"
+  });
   res.json({ message: "Logged out" });
 });
 
