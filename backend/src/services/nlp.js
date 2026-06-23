@@ -1,41 +1,41 @@
-const { pipeline } = require("@xenova/transformers");
+const nlp = require("compromise");
 
-let generator;
-
-// Generate flashcards from notes using local t5-small
+// Generate flashcards from notes using lightweight NLP (compromise)
 async function generateFlashcards(notes) {
-  if (!generator) {
-    // Lazy load the pipeline
-    // using text2text-generation for t5
-    generator = await pipeline("text2text-generation", "Xenova/t5-small");
-  }
-
-  // Split notes roughly by sentences for multiple flashcards if needed, 
-  // or simply generate one summary/question. For a smart generator, we extract a summary.
-  // In a real app we might chunk the text.
-  const chunks = notes.match(/[^\.!\?]+[\.!\?]+/g) || [notes];
+  // Parse the text into sentences
+  const doc = nlp(notes);
+  const sentences = doc.sentences().out('array');
   const flashcards = [];
 
-  for (let i = 0; i < Math.min(chunks.length, 5); i++) {
-    const chunk = chunks[i].trim();
-    if (chunk.length < 10) continue;
+  for (let i = 0; i < Math.min(sentences.length, 10); i++) {
+    const sentence = sentences[i].trim();
+    if (sentence.length < 15) continue;
     
-    // T5 can do summarization or other tasks. 
-    // We can use it to generate a shorter version of the sentence to act as a "fill in the blank" or just question-like text.
-    const res = await generator(`summarize: ${chunk}`, {
-      max_new_tokens: 30
-    });
+    // Use compromise to find nouns/entities in this specific sentence
+    const sDoc = nlp(sentence);
+    const nouns = sDoc.nouns().out('array');
     
-    const summary = res[0].generated_text;
-    flashcards.push({
-      question: `What is the summary of: "${chunk.substring(0, 30)}..."?`,
-      answer: summary || chunk
-    });
+    if (nouns.length > 0) {
+      // Pick the most significant noun (often the last or longest one)
+      const targetNoun = nouns[Math.floor(Math.random() * nouns.length)];
+      
+      // Create a fill-in-the-blank question by replacing the noun
+      // We use a regex to ensure we only replace the exact word
+      const regex = new RegExp(`\\b${targetNoun}\\b`, 'i');
+      const questionText = sentence.replace(regex, "______");
+      
+      if (questionText !== sentence) {
+        flashcards.push({
+          question: questionText,
+          answer: targetNoun
+        });
+      }
+    }
   }
 
-  // Fallback if empty
+  // Fallback if no valid questions could be generated
   if (flashcards.length === 0) {
-    flashcards.push({ question: "Key takeaway?", answer: notes });
+    flashcards.push({ question: "What is the main topic of your notes?", answer: notes });
   }
 
   return flashcards;
