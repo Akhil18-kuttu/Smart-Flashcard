@@ -8,6 +8,8 @@ export default function Review() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [isDone, setIsDone] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -20,15 +22,17 @@ export default function Review() {
         if (!res.ok) {
           if (res.status === 401 || res.status === 403) {
             router.push("/");
+            return null;
           }
-          throw new Error("Failed to fetch");
+          throw new Error(`Server error: ${res.status}`);
         }
         return res.json();
       })
       .then(data => {
+        if (data === null) return; // redirecting
         if (!Array.isArray(data)) {
-          setCards([]);
           setIsDone(true);
+          setLoading(false);
           return;
         }
         // Filter cards that are due for review
@@ -36,8 +40,13 @@ export default function Review() {
         const due = data.filter(c => new Date(c.nextReviewDate) <= now);
         setCards(due);
         if (due.length === 0) setIsDone(true);
+        setLoading(false);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        setError("Could not connect to the server. Make sure the backend is running.");
+        setLoading(false);
+      });
   }, [router, API_URL]);
 
   const handleReview = async (status) => {
@@ -65,6 +74,19 @@ export default function Review() {
     }
   };
 
+  if (loading) {
+    return <main className="container" style={{ textAlign: 'center', marginTop: '10vh', color: 'var(--text-muted)' }}>Loading your review session…</main>;
+  }
+
+  if (error) {
+    return (
+      <main className="container" style={{ textAlign: 'center', marginTop: '10vh' }}>
+        <h2 style={{ color: '#e05c5c', marginBottom: '1rem' }}>Connection Error</h2>
+        <p style={{ color: 'var(--text-muted)' }}>{error}</p>
+      </main>
+    );
+  }
+
   if (isDone) {
     return (
       <main className="container" style={{ textAlign: 'center', marginTop: '10vh' }}>
@@ -73,10 +95,6 @@ export default function Review() {
         <button onClick={() => router.push('/dashboard')} className="btn btn-primary">Go to Dashboard</button>
       </main>
     );
-  }
-
-  if (cards.length === 0) {
-    return <main className="container" style={{ textAlign: 'center', marginTop: '10vh', color: 'var(--text-muted)' }}>Loading...</main>;
   }
 
   const currentCard = cards[currentIndex];

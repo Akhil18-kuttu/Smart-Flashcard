@@ -39,6 +39,21 @@ export default function Dashboard() {
       });
   }, [router, API_URL]);
 
+  const handleDelete = async (id) => {
+    if (!confirm("Delete this flashcard?")) return;
+    try {
+      const res = await fetch(`${API_URL}/flashcards/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (res.ok) {
+        setCards(prev => prev.filter(c => c._id !== id));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <main className="container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
@@ -82,6 +97,13 @@ export default function Dashboard() {
                     Next Review: {new Date(card.nextReviewDate).toLocaleString()}
                   </div>
                 </div>
+                <button
+                  onClick={() => handleDelete(card._id)}
+                  className="btn btn-danger"
+                  style={{ marginTop: '1rem', fontSize: '0.75rem', padding: '0.35rem 0.75rem' }}
+                >
+                  Delete
+                </button>
               </AnimatedCard>
             ))}
           </div>

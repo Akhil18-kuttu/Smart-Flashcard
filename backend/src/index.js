@@ -13,7 +13,11 @@ const app = express();
 const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, "") : "http://localhost:3000";
 
 app.use(cors({
-  origin: [frontendUrl, "http://localhost:3000"],
+  origin: [
+    frontendUrl,
+    "http://localhost:3000",
+    "https://smart-flashcard-jade.vercel.app"
+  ],
   credentials: true
 }));
 
