@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import AnimatedCard from "@/components/AnimatedCard";
 
 export default function Generate() {
   const [notes, setNotes] = useState("");
@@ -40,30 +41,31 @@ export default function Generate() {
 
   return (
     <main className="container">
-      <div className="card glass-panel" style={{ maxWidth: '800px', margin: '0 auto' }}>
+      <AnimatedCard className="glass-panel" style={{ maxWidth: '800px', margin: '0 auto' }}>
         <h1 className="title">Generate Flashcards</h1>
-        <p style={{ marginBottom: '1.5rem', color: 'var(--text-color)', opacity: 0.8 }}>
-          Paste your study notes below. Our local AI will analyze the text and automatically generate question/answer pairs for you.
+        <p style={{ marginBottom: '1.5rem', color: 'var(--text-muted)' }}>
+          Paste your study notes below. Our AI will analyze the text and automatically generate question/answer pairs for you.
         </p>
 
         <form onSubmit={handleGenerate}>
           <textarea
             className="input-field"
-            placeholder="e.g. Mitochondria is the powerhouse of the cell..."
+            placeholder="e.g., Mitochondria is the powerhouse of the cell..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             disabled={isLoading}
+            style={{ minHeight: '200px' }}
           />
           <button 
             type="submit" 
-            className="btn btn-primary" 
+            className="btn btn-accent" 
             disabled={isLoading || !notes.trim()}
-            style={{ width: '100%', fontSize: '1.1rem' }}
+            style={{ width: '100%', padding: '0.75rem' }}
           >
-            {isLoading ? "Generating with AI..." : "Generate Flashcards 🪄"}
+            {isLoading ? "Generating with AI..." : "Generate Flashcards"}
           </button>
         </form>
-      </div>
+      </AnimatedCard>
     </main>
   );
 }

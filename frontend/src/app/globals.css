@@ -1,33 +1,39 @@
 :root {
-  --bg-color: #f8fafc;
-  --text-color: #334155;
-  --primary-color: #3b82f6;
-  --primary-hover: #2563eb;
-  --secondary-color: #ffffff;
-  --accent-color: #8b5cf6;
-  --border-color: #e2e8f0;
-  --success-color: #10b981;
-  --danger-color: #ef4444;
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --radius: 8px;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  /* Color Palette */
+  --bg-color: #F8F6F1;
+  --card-surface: #FFFFFF;
+  --text-ink: #1C1C1A;
+  --text-muted: #6B6A66;
+  --accent-sage: #4A6B5B;
+  --accent-light: #E2EDE7;
+  --border-color: #DDDAD3;
+
+  /* Typography Fallbacks */
+  --font-inter: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-cormorant: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
 }
 
+/* Global Reset & Base Styling */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: var(--font-family);
+  color: var(--text-ink);
+  font-family: var(--font-inter);
+  font-size: 13px;
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  transition: background-color 0.3s ease;
+  padding-top: 80px; /* Offset for fixed/sticky navbar */
 }
 
 a {
@@ -47,101 +53,201 @@ button {
   width: 100%;
 }
 
+/* Typography Rules */
+.title {
+  font-family: var(--font-cormorant);
+  font-weight: 500;
+  font-size: 2.25rem;
+  color: var(--text-ink);
+  margin-bottom: 1rem;
+}
+
+.logo-font {
+  font-family: var(--font-cormorant);
+  font-weight: 500;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+/* Cards */
 .card {
-  background-color: var(--secondary-color);
+  background-color: var(--card-surface);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius);
+  border-top: 1px solid var(--border-color);
+  border-radius: 4px;
   padding: 2rem;
-  box-shadow: var(--shadow);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+  transition: border-top-color 150ms ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-top-color: var(--accent-sage);
 }
 
+.card.glass-panel {
+  background: var(--card-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* Card Question & Answer styles */
+.card h3, .flashcard-front h2 {
+  font-family: var(--font-cormorant);
+  font-weight: 500;
+  font-size: 17px;
+  color: var(--text-ink);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.card p, .flashcard-back h2 {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.flashcard-back h2 {
+  color: var(--text-ink);
+}
+
+/* Status Dots */
+.status-dot-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: background-color 150ms ease;
+}
+
+.status-dot.known {
+  background-color: var(--accent-sage);
+}
+
+.status-dot.not-known {
+  background-color: var(--border-color);
+}
+
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius);
+  padding: 0.6rem 1.2rem;
+  border-radius: 2px;
+  font-family: var(--font-inter);
   font-weight: 500;
-  border: none;
-  transition: all 0.2s ease;
-  background-color: var(--primary-color);
-  color: white;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+  font-size: 13px;
+  border: 1px solid transparent;
+  background-color: var(--accent-sage);
+  color: #FFFFFF;
+  transition: all 180ms ease;
+  box-shadow: none;
 }
 
 .btn:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+  background-color: #3b5447; /* Darker sage */
 }
 
-.btn:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(59, 130, 246, 0.2);
+.btn-primary {
+  background-color: var(--accent-sage);
+  color: #FFFFFF;
+  border: 1px solid transparent;
 }
 
 .btn-accent {
-  background-color: var(--accent-color);
-  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
-}
-.btn-accent:hover {
-  background-color: #7c3aed;
-  box-shadow: 0 4px 6px rgba(139, 92, 246, 0.3);
+  background-color: var(--text-ink);
+  color: var(--bg-color);
+  border: 1px solid transparent;
 }
 
-.btn-success {
-  background-color: var(--success-color);
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
-}
-.btn-success:hover {
-  background-color: #059669;
-  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+.btn-accent:hover {
+  background-color: var(--accent-sage);
+  color: #FFFFFF;
 }
 
 .btn-danger {
-  background-color: var(--danger-color);
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+  /* Ghost style for danger button in review, e.g. "Not Known" */
+  background-color: transparent;
+  border: 1px solid var(--text-ink);
+  color: var(--text-ink);
 }
+
 .btn-danger:hover {
-  background-color: #dc2626;
-  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
+  background-color: var(--text-ink);
+  color: var(--bg-color);
+}
+
+.btn-success {
+  background-color: var(--accent-sage);
+  color: #FFFFFF;
+  border: 1px solid transparent;
+}
+
+.btn-success:hover {
+  background-color: #3b5447;
 }
 
 .btn-outline {
   background-color: transparent;
   border: 1px solid var(--border-color);
-  color: var(--text-color);
-  box-shadow: none;
-}
-.btn-outline:hover {
-  background-color: #f1f5f9;
-  border-color: #cbd5e1;
-  box-shadow: none;
+  color: var(--text-ink);
 }
 
+.btn-outline:hover {
+  background-color: var(--accent-light);
+  border-color: var(--accent-sage);
+}
+
+/* Create New Cards Button Specific Ghost Styling */
+.btn-create-cards {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--text-ink);
+  background-color: transparent;
+  color: var(--text-ink);
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 13px;
+  border-radius: 2px;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.btn-create-cards:hover {
+  background-color: var(--text-ink);
+  color: var(--bg-color);
+}
+
+/* Input Fields */
 .input-field {
   width: 100%;
   padding: 0.75rem 1rem;
-  border-radius: var(--radius);
+  border-radius: 2px;
   border: 1px solid var(--border-color);
-  background-color: #ffffff;
-  color: var(--text-color);
-  font-size: 1rem;
+  background-color: #FFFFFF;
+  color: var(--text-ink);
+  font-family: var(--font-inter);
+  font-size: 13px;
   margin-bottom: 1rem;
   outline: none;
-  transition: all 0.2s ease;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: border-color 150ms ease;
+  box-shadow: none;
 }
 
 .input-field:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: var(--text-ink);
 }
 
 textarea.input-field {
@@ -149,54 +255,90 @@ textarea.input-field {
   min-height: 150px;
 }
 
-.glass-panel {
-  /* Replaced glassmorphism with a clean, classic solid card style */
-  background: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.title {
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--text-color);
-  /* Classic solid color instead of gradient for simpler look */
-}
-
+/* Navbar */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: var(--secondary-color);
-  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  border-bottom: 1px solid rgba(221, 218, 211, 0); /* starts invisible */
+  transition: border-bottom-color 200ms ease;
+}
+
+.navbar.scrolled {
+  border-bottom-color: var(--border-color); /* fades in #DDDAD3 */
 }
 
 .navbar-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--primary-color);
+  color: var(--text-ink);
 }
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 1.5rem;
 }
 
+/* Nav links standard styling */
+.nav-link {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+  color: var(--text-ink);
+}
+
+.nav-link.active {
+  color: var(--accent-sage); /* Active link is sage */
+}
+
+.nav-logout {
+  color: var(--text-muted);
+}
+
+.nav-logout:hover {
+  color: var(--text-ink);
+}
+
+/* Error Text styling */
 .error-text {
-  color: var(--danger-color);
-  font-size: 0.875rem;
+  color: var(--text-ink);
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 13px;
+  background-color: var(--accent-light);
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+  border: 1px solid var(--accent-sage);
   margin-bottom: 1rem;
+  display: inline-block;
+  text-align: left;
 }
 
+/* Flashcard Flip Mechanics */
 .flashcard-inner {
   position: relative;
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.6s;
+  transition: transform 360ms cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
 }
 
@@ -210,14 +352,79 @@ textarea.input-field {
   height: 100%;
   backface-visibility: hidden;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  font-size: 1.25rem;
+}
+
+.flashcard-front {
+  background-color: var(--card-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
 }
 
 .flashcard-back {
   transform: rotateY(180deg);
-  background-color: rgba(99, 102, 241, 0.1);
-  border: 1px solid var(--primary-color);
+  background-color: var(--accent-light);
+  border: 1px solid var(--accent-sage);
+  border-radius: 4px;
+}
+
+/* Animation Stagger System */
+.card.animate-fade-in {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 280ms ease-out, transform 280ms ease-out;
+  transition-delay: var(--stagger-delay, 0ms);
+}
+
+.card.animate-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Prefers Reduced Motion settings */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 150ms !important;
+    transition-delay: 0s !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+  }
+  
+  .card.animate-fade-in {
+    transform: none !important;
+    transition: opacity 150ms ease-out !important;
+    transition-delay: 0s !important;
+  }
+  
+  .card {
+    transition: opacity 150ms ease-out !important;
+    transform: none !important;
+  }
+
+  .flashcard-inner {
+    transition: opacity 150ms ease-out !important;
+    transform-style: flat !important;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: none !important;
+  }
+
+  .flashcard-back {
+    display: none;
+  }
+
+  .flashcard.flipped .flashcard-front {
+    display: none;
+  }
+
+  .flashcard.flipped .flashcard-back {
+    display: flex;
+    transform: none !important;
+  }
 }

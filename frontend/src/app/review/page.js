@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import AnimatedCard from "@/components/AnimatedCard";
 
 export default function Review() {
   const [cards, setCards] = useState([]);
@@ -67,15 +68,15 @@ export default function Review() {
   if (isDone) {
     return (
       <main className="container" style={{ textAlign: 'center', marginTop: '10vh' }}>
-        <h1 className="title">You're all caught up! 🎉</h1>
-        <p style={{ marginTop: '1rem', marginBottom: '2rem' }}>Come back later to review more cards.</p>
+        <h1 className="title">You're all caught up!</h1>
+        <p style={{ marginTop: '1rem', marginBottom: '2rem', color: 'var(--text-muted)' }}>Come back later to review more cards.</p>
         <button onClick={() => router.push('/dashboard')} className="btn btn-primary">Go to Dashboard</button>
       </main>
     );
   }
 
   if (cards.length === 0) {
-    return <main className="container" style={{ textAlign: 'center', marginTop: '10vh' }}>Loading...</main>;
+    return <main className="container" style={{ textAlign: 'center', marginTop: '10vh', color: 'var(--text-muted)' }}>Loading...</main>;
   }
 
   const currentCard = cards[currentIndex];
@@ -83,7 +84,7 @@ export default function Review() {
   return (
     <main className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5vh' }}>
       <h1 className="title" style={{ marginBottom: '2rem', fontSize: '2rem' }}>Review Session</h1>
-      <div style={{ marginBottom: '1rem', color: 'var(--primary-color)', fontWeight: 'bold' }}>
+      <div style={{ marginBottom: '1.5rem', color: 'var(--accent-sage)', fontWeight: '500', fontFamily: 'var(--font-inter)' }}>
         Card {currentIndex + 1} of {cards.length}
       </div>
 
@@ -93,11 +94,11 @@ export default function Review() {
         onClick={() => setFlipped(!flipped)}
       >
         <div className="flashcard-inner">
-          <div className="flashcard-front card glass-panel">
+          <div className="flashcard-front">
             <h2>{currentCard.question}</h2>
-            <p style={{ position: 'absolute', bottom: '1rem', fontSize: '0.8rem', color: 'var(--border-color)' }}>Click to reveal answer</p>
+            <p style={{ position: 'absolute', bottom: '1.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>Click to reveal answer</p>
           </div>
-          <div className="flashcard-back card glass-panel">
+          <div className="flashcard-back">
             <h2>{currentCard.answer}</h2>
           </div>
         </div>

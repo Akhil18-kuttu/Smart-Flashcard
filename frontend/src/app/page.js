@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import AnimatedCard from "@/components/AnimatedCard";
 
 export default function Home() {
   const router = useRouter();
@@ -44,14 +45,14 @@ export default function Home() {
   };
 
   return (
-    <main className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-      <div className="card glass-panel" style={{ maxWidth: '400px', width: '100%', textAlign: 'center' }}>
-        <h1 className="title">{isLogin ? "Welcome Back" : "Join SmartFlash"}</h1>
-        <p style={{ marginBottom: '2rem', color: 'var(--border-color)' }}>
+    <main className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, minHeight: 'calc(100vh - 120px)' }}>
+      <AnimatedCard className="glass-panel" style={{ maxWidth: '400px', width: '100%', textAlign: 'center' }}>
+        <h1 className="title" style={{ fontSize: '2rem' }}>{isLogin ? "Welcome Back" : "Join SmartFlash"}</h1>
+        <p style={{ marginBottom: '2rem', color: 'var(--text-muted)' }}>
           {isLogin ? "Log in to review your cards." : "Sign up to start learning smarter."}
         </p>
         
-        {error && <div className="error-text">{error}</div>}
+        {error && <div className="error-text" style={{ display: 'block', textAlign: 'center' }}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <input
@@ -70,21 +71,21 @@ export default function Home() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit" className="btn btn-accent" style={{ width: '100%' }}>
+          <button type="submit" className="btn btn-accent" style={{ width: '100%', padding: '0.75rem' }}>
             {isLogin ? "Login" : "Sign Up"}
           </button>
         </form>
 
-        <p style={{ marginTop: '1.5rem', fontSize: '0.875rem' }}>
+        <p style={{ marginTop: '1.5rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <span 
-            style={{ color: 'var(--primary-color)', cursor: 'pointer', fontWeight: 'bold' }} 
+            style={{ color: 'var(--accent-sage)', cursor: 'pointer', fontWeight: 'bold', textDecoration: 'underline' }} 
             onClick={() => setIsLogin(!isLogin)}
           >
             {isLogin ? "Sign up" : "Log in"}
           </span>
         </p>
-      </div>
+      </AnimatedCard>
     </main>
   );
 }

@@ -20,8 +20,11 @@ async function generateFlashcards(notes) {
       const targetNoun = nouns[Math.floor(Math.random() * nouns.length)];
       
       // Create a fill-in-the-blank question by replacing the noun
-      // We use a regex to ensure we only replace the exact word
-      const regex = new RegExp(`\\b${targetNoun}\\b`, 'i');
+      // We escape any special regex characters to avoid SyntaxError
+      const escapedNoun = targetNoun.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const startBoundary = /^\w/.test(targetNoun) ? '\\b' : '';
+      const endBoundary = /\w$/.test(targetNoun) ? '\\b' : '';
+      const regex = new RegExp(`${startBoundary}${escapedNoun}${endBoundary}`, 'i');
       const questionText = sentence.replace(regex, "______");
       
       if (questionText !== sentence) {
